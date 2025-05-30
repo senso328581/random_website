@@ -1,19 +1,18 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" data-theme="default">
 <head>
   <meta charset="UTF-8">
   <title>Discord Troll Tool – Theme Only</title>
-  <!-- 元サイトの stylesheets/*.css を jsDelivr 経由で読み込む -->
-  <link
-    id="theme-style"
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/gh/yudachix/discord-troll-tool@main/stylesheets/default.css"
-  >
+
+  <!-- 元サイトのテーマごとのCSS定義 -->
+  <link id="theme-css" rel="stylesheet" href="stylesheets/default.css">
+
   <style>
-    /* Select と textarea の最小限スタイル */
+    /* UI（Select と textarea）の最小限スタイル */
     body {
       margin: 1rem;
       font-family: sans-serif;
+      color: #fff;
     }
     label {
       display: inline-block;
@@ -48,6 +47,7 @@
     <option value="gaming-css">Gaming CSS</option>
     <option value="gaming-css-wave">CSS Wave Gaming</option>
     <option value="gaming-input-field">Input Field Gaming</option>
+    <option value="gaming-?">?</option>
   </select>
 
   <textarea id="content" placeholder="ここにメッセージを入力"></textarea>
@@ -55,19 +55,38 @@
   <script>
     (()=>{
       const select = document.getElementById('theme-select');
-      const link   = document.getElementById('theme-style');
-      select.addEventListener('change', ()=>{
-        link.href = `https://cdn.jsdelivr.net/gh/yudachix/discord-troll-tool@main/stylesheets/${select.value}.css`;
+      const css    = document.getElementById('theme-css');
+      let   modScr = null;
+
+      function loadModule(theme) {
+        // 既存のモジュールを外す
+        if (modScr) document.body.removeChild(modScr);
+        // 新しいモジュールを追加
+        modScr = document.createElement('script');
+        modScr.src = `modules/${theme}.js`;
+        document.body.appendChild(modScr);
+      }
+
+      function setTheme(theme) {
+        // HTML の data-theme 属性を切り替え
+        document.documentElement.setAttribute('data-theme', theme);
+        // CSS を切り替え
+        css.href = `stylesheets/${theme}.css`;
+        // 動的背景を生成するモジュールを切り替え
+        loadModule(theme);
+      }
+
+      select.addEventListener('change', e => {
+        setTheme(e.target.value);
+        localStorage.setItem('theme', e.target.value);
       });
-      // 初期テーマ保持（localStorage から読み込む／なければ default）
+
+      // 初期化：保存済み or default
       const saved = localStorage.getItem('theme') || 'default';
       if (select.querySelector(`option[value="${saved}"]`)) {
         select.value = saved;
       }
-      link.href = `https://cdn.jsdelivr.net/gh/yudachix/discord-troll-tool@main/stylesheets/${select.value}.css`;
-      select.addEventListener('change', ()=> {
-        localStorage.setItem('theme', select.value);
-      });
+      setTheme(select.value);
     })();
   </script>
 </body>
