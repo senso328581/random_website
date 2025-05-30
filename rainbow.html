@@ -2,31 +2,73 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>Discord Troll Tool (Theme Only)</title>
-  <!-- テーマごとの背景定義を含むCSSファイルを読み込む -->
-  <link rel="stylesheet" id="theme-style" href="stylesheets/default.css">
+  <title>Discord Troll Tool – Theme Only</title>
+  <!-- 元サイトの stylesheets/*.css を jsDelivr 経由で読み込む -->
+  <link
+    id="theme-style"
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/yudachix/discord-troll-tool@main/stylesheets/default.css"
+  >
+  <style>
+    /* Select と textarea の最小限スタイル */
+    body {
+      margin: 1rem;
+      font-family: sans-serif;
+    }
+    label {
+      display: inline-block;
+      margin-right: .5rem;
+      vertical-align: middle;
+    }
+    select, textarea {
+      vertical-align: middle;
+      font-size: 1rem;
+      padding: .4rem;
+      border-radius: 4px;
+      border: 1px solid #888;
+      background: rgba(255,255,255,0.1);
+      color: inherit;
+      backdrop-filter: blur(4px);
+    }
+    textarea {
+      display: block;
+      margin-top: 1rem;
+      width: 100%;
+      max-width: 400px;
+      height: 5em;
+      resize: vertical;
+    }
+  </style>
 </head>
 <body>
-  <label for="theme-select">Select a theme:</label>
+  <label for="theme-select">Select Theme:</label>
   <select id="theme-select">
     <option value="default">Default</option>
     <option value="javascript">JavaScript</option>
     <option value="gaming-css">Gaming CSS</option>
-    <option value="gaming-css-wave">Gaming CSS Wave</option>
-    <option value="gaming-input-field">Gaming Input Field</option>
-    <option value="gaming-?">?</option>
+    <option value="gaming-css-wave">CSS Wave Gaming</option>
+    <option value="gaming-input-field">Input Field Gaming</option>
   </select>
 
-  <label for="content">Content:</label>
-  <textarea id="content" rows="5" placeholder="ここにメッセージを入力"></textarea>
+  <textarea id="content" placeholder="ここにメッセージを入力"></textarea>
 
   <script>
-    // テーマ切り替え時に読み込むCSSファイルを差し替え
-    const themeSelect = document.getElementById('theme-select');
-    const themeLink   = document.getElementById('theme-style');
-    themeSelect.addEventListener('change', () => {
-      themeLink.href = `stylesheets/${themeSelect.value}.css`;
-    });
+    (()=>{
+      const select = document.getElementById('theme-select');
+      const link   = document.getElementById('theme-style');
+      select.addEventListener('change', ()=>{
+        link.href = `https://cdn.jsdelivr.net/gh/yudachix/discord-troll-tool@main/stylesheets/${select.value}.css`;
+      });
+      // 初期テーマ保持（localStorage から読み込む／なければ default）
+      const saved = localStorage.getItem('theme') || 'default';
+      if (select.querySelector(`option[value="${saved}"]`)) {
+        select.value = saved;
+      }
+      link.href = `https://cdn.jsdelivr.net/gh/yudachix/discord-troll-tool@main/stylesheets/${select.value}.css`;
+      select.addEventListener('change', ()=> {
+        localStorage.setItem('theme', select.value);
+      });
+    })();
   </script>
 </body>
 </html>
