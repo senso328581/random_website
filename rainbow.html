@@ -2,60 +2,30 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>Discord Troll Tool - Minimal</title>
-  <!-- 元サイトの stylesheets 以下にあるテーマごとのCSSを読み込む -->
-  <link rel="stylesheet" href="https://yudachix.github.io/discord-troll-tool/stylesheets/default.css">
-  <link rel="stylesheet" href="https://yudachix.github.io/discord-troll-tool/stylesheets/javascript.css">
-  <link rel="stylesheet" href="https://yudachix.github.io/discord-troll-tool/stylesheets/gaming-css.css">
-  <link rel="stylesheet" href="https://yudachix.github.io/discord-troll-tool/stylesheets/gaming-css-wave.css">
-  <link rel="stylesheet" href="https://yudachix.github.io/discord-troll-tool/stylesheets/gaming-input-field.css">
+  <title>Discord Troll Tool (Theme Only)</title>
+  <!-- テーマごとの背景定義を含むCSSファイルを読み込む -->
+  <link rel="stylesheet" id="theme-style" href="stylesheets/default.css">
 </head>
-<body data-theme="default">
-  <label for="theme-select">Select Theme:</label>
+<body>
+  <label for="theme-select">Select a theme:</label>
   <select id="theme-select">
     <option value="default">Default</option>
     <option value="javascript">JavaScript</option>
     <option value="gaming-css">Gaming CSS</option>
-    <option value="gaming-css-wave">CSS Wave Gaming</option>
-    <option value="gaming-input-field">Input Field Gaming</option>
+    <option value="gaming-css-wave">Gaming CSS Wave</option>
+    <option value="gaming-input-field">Gaming Input Field</option>
+    <option value="gaming-?">?</option>
   </select>
 
+  <label for="content">Content:</label>
   <textarea id="content" rows="5" placeholder="ここにメッセージを入力"></textarea>
 
   <script>
-    document.getElementById('theme-select').addEventListener('change', function() {
-      document.documentElement.setAttribute('data-theme', this.value);
-    });
-  </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>Discord Troll Tool - Minimal</title>
-  <!-- 元サイトの stylesheets 以下にあるテーマごとのCSSを読み込む -->
-  <link rel="stylesheet" href="https://yudachix.github.io/discord-troll-tool/stylesheets/default.css">
-  <link rel="stylesheet" href="https://yudachix.github.io/discord-troll-tool/stylesheets/javascript.css">
-  <link rel="stylesheet" href="https://yudachix.github.io/discord-troll-tool/stylesheets/gaming-css.css">
-  <link rel="stylesheet" href="https://yudachix.github.io/discord-troll-tool/stylesheets/gaming-css-wave.css">
-  <link rel="stylesheet" href="https://yudachix.github.io/discord-troll-tool/stylesheets/gaming-input-field.css">
-</head>
-<body data-theme="default">
-  <label for="theme-select">Select Theme:</label>
-  <select id="theme-select">
-    <option value="default">Default</option>
-    <option value="javascript">JavaScript</option>
-    <option value="gaming-css">Gaming CSS</option>
-    <option value="gaming-css-wave">CSS Wave Gaming</option>
-    <option value="gaming-input-field">Input Field Gaming</option>
-  </select>
-
-  <textarea id="content" rows="5" placeholder="ここにメッセージを入力"></textarea>
-
-  <script>
-    document.getElementById('theme-select').addEventListener('change', function() {
-      document.documentElement.setAttribute('data-theme', this.value);
+    // テーマ切り替え時に読み込むCSSファイルを差し替え
+    const themeSelect = document.getElementById('theme-select');
+    const themeLink   = document.getElementById('theme-style');
+    themeSelect.addEventListener('change', () => {
+      themeLink.href = `stylesheets/${themeSelect.value}.css`;
     });
   </script>
 </body>
