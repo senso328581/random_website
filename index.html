@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ランダムサイトオープナー</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    button {
+      font-size: 16px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>ランダムサイトオープナー</h1>
+  <button id="openBtn">ランダムに開く</button>
+
+  <script>
+    function generateRandomDomain() {
+      const letters = 'abcdefghijklmnopqrstuvwxyz';
+      const len = Math.floor(Math.random() * 6) + 5; // 5～10文字
+      let name = '';
+      for (let i = 0; i < len; i++) {
+        name += letters.charAt(Math.floor(Math.random() * letters.length));
+      }
+      const tlds = ['.com', '.net', '.org', '.jp', '.info'];
+      return 'http://' + name + tlds[Math.floor(Math.random() * tlds.length)];
+    }
+
+    document.getElementById('openBtn').addEventListener('click', () => {
+      const url = generateRandomDomain();
+      window.open(url, '_blank');
+    });
+  </script>
+</body>
+</html>
