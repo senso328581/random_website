@@ -3,91 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <title>Discord Troll Tool – Theme Only</title>
-
-  <!-- 元サイトのテーマごとのCSS定義 -->
-  <link id="theme-css" rel="stylesheet" href="stylesheets/default.css">
-
-  <style>
-    /* UI（Select と textarea）の最小限スタイル */
-    body {
-      margin: 1rem;
-      font-family: sans-serif;
-      color: #fff;
-    }
-    label {
-      display: inline-block;
-      margin-right: .5rem;
-      vertical-align: middle;
-    }
-    select, textarea {
-      vertical-align: middle;
-      font-size: 1rem;
-      padding: .4rem;
-      border-radius: 4px;
-      border: 1px solid #888;
-      background: rgba(255,255,255,0.1);
-      color: inherit;
-      backdrop-filter: blur(4px);
-    }
-    textarea {
-      display: block;
-      margin-top: 1rem;
-      width: 100%;
-      max-width: 400px;
-      height: 5em;
-      resize: vertical;
-    }
-  </style>
+  <!-- 元サイトのテーマ用CSSを全件読み込み -->
+  <link rel="stylesheet" href="stylesheets/default.css">
+  <link rel="stylesheet" href="stylesheets/javascript.css">
+  <link rel="stylesheet" href="stylesheets/gaming-css.css">
+  <link rel="stylesheet" href="stylesheets/gaming-css-wave.css">
+  <link rel="stylesheet" href="stylesheets/gaming-input-field.css">
 </head>
 <body>
-  <label for="theme-select">Select Theme:</label>
-  <select id="theme-select">
+  <!-- テーマ切り替え -->
+  <label for="theme">Select a theme:</label>
+  <select id="theme">
     <option value="default">Default</option>
     <option value="javascript">JavaScript</option>
     <option value="gaming-css">Gaming CSS</option>
-    <option value="gaming-css-wave">CSS Wave Gaming</option>
+    <option value="gaming-css-wave">Gaming CSS Wave</option>
     <option value="gaming-input-field">Input Field Gaming</option>
-    <option value="gaming-?">?</option>
   </select>
 
-  <textarea id="content" placeholder="ここにメッセージを入力"></textarea>
+  <!-- メッセージ入力ボックス -->
+  <label for="content">Content:</label>
+  <textarea id="content" rows="5" placeholder="ここにメッセージを入力"></textarea>
 
-  <script>
-    (()=>{
-      const select = document.getElementById('theme-select');
-      const css    = document.getElementById('theme-css');
-      let   modScr = null;
-
-      function loadModule(theme) {
-        // 既存のモジュールを外す
-        if (modScr) document.body.removeChild(modScr);
-        // 新しいモジュールを追加
-        modScr = document.createElement('script');
-        modScr.src = `modules/${theme}.js`;
-        document.body.appendChild(modScr);
-      }
-
-      function setTheme(theme) {
-        // HTML の data-theme 属性を切り替え
-        document.documentElement.setAttribute('data-theme', theme);
-        // CSS を切り替え
-        css.href = `stylesheets/${theme}.css`;
-        // 動的背景を生成するモジュールを切り替え
-        loadModule(theme);
-      }
-
-      select.addEventListener('change', e => {
-        setTheme(e.target.value);
-        localStorage.setItem('theme', e.target.value);
-      });
-
-      // 初期化：保存済み or default
-      const saved = localStorage.getItem('theme') || 'default';
-      if (select.querySelector(`option[value="${saved}"]`)) {
-        select.value = saved;
-      }
-      setTheme(select.value);
-    })();
-  </script>
+  <!-- 元サイトのモジュール読み込み -->
+  <script type="module" src="modules/index.mjs"></script>
 </body>
 </html>
